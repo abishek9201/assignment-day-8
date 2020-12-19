@@ -1,0 +1,61 @@
+#Step 1
+!pip install firebase
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+
+cred = credentials.Certificate("python-demo-letsupgrade-firebase-adminsdk-uarq8-8b119e9481.json")
+firebase_admin.initialize_app(cred)
+db = firestore.client()
+doc_ref = db.collection(u'users').document(u'abc')
+
+doc_ref.set({
+    u'first': u'Faiza',
+    u'last': u'Gokak',
+    u'born': 1997
+})
+def enterDataInDB():
+    doc_ref = db.collection(u'LetsUpgradeUsers').document()
+    
+    name = input("Enter Name - ")
+    lastName = input("Enter Last Name - ")
+    age = int(input("Enter Age - "))
+    
+    dit = {}
+    dit["firstName"] = name
+    dit["lastName"] = lastName
+    dit["age"] = age
+    
+    doc_ref.set(dit)
+enterDataInDB("sai","lu",90)
+enterDataInDB("Yogesh","LU",7829)
+enterDataInDB("Tejas","LU",17)
+enterDataInDB("Trith","Shah",17)
+enterDataInDB("kairav","Singh LU",17)
+enterDataInDB("Saikiran","LetsUpgrade",50)
+enterDataInDB("manglesh","Kumar LU",23)
+enterDataInDB()
+docs = db.collection(u'LetsUpgradeUsers').stream()
+
+for doc in docs:
+#     print(f'{doc.id} => {doc.to_dict()}')
+    
+    print("ID - ", doc.id)
+    
+    print("First Name - ", doc.to_dict().get("firstName"))
+    print("Last Name - ", doc.to_dict().get("lastName"))
+    print("Age - ", doc.to_dict().get("age") )
+    
+    print("---------------")
+    print("---------------")
+    
+def updateDatainFirebase(uid, updatedAge):
+    doc_ref = db.collection(u'LetsUpgradeUsers').document(uid)
+    
+    doc_ref.update({"age":updatedAge})
+updateDatainFirebase("zslFTBzZl8BKFhSI4Yxw",26)
+updateDatainFirebase("tQQd4Kt7UdGD6xuldAAN",17)
+def deleteDataInFirebase(uid):
+    db.collection(u'LetsUpgradeUsers').document(uid).delete()
+deleteDataInFirebase("0rg4glbfc8l7cuTbl2MD")
+deleteDataInFirebase("bbr4TLEuXvRhqaMYAV5d")
